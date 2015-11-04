@@ -3,6 +3,19 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['public/lib/handlebars.js', 
+              'public/lib/underscore.js', 
+              'public/lib/jquery.js', 
+              'public/lib/backbone.js',
+              'public/client/*.js'
+              ],
+
+        dest: 'dist/built.js',
+      },
     },
 
     mochaTest: {
@@ -21,14 +34,26 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        banner: '/*! Bagel - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> */'
+      },
+      my_target: {
+        files: {
+          'dist/output.min.js': ['dist/built.js']
+        }
+      }
     },
 
     jshint: {
       files: [
-        // Add filespec list here
+        'public/**/*.js',
+        '*.js',
+        'app/*.js',
+        'app/**/*.js',
+        'lib/*.js'
       ],
       options: {
-        force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
           'public/lib/**/*.js',
@@ -38,7 +63,11 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
-        // Add filespec list here
+      target: {
+        files: {
+          'dist/output.css': ['public/client/style.css']
+        }
+      }
     },
 
     watch: {
@@ -96,6 +125,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
   ]);
+
+  grunt.registerTask('bagel', ['jshint', 'concat', 'uglify']);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
