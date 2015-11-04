@@ -2,12 +2,12 @@ var Bookshelf = require('bookshelf');
 var path = require('path');
 
 var db = Bookshelf.initialize({
-  client: 'sqlite3',
+  client: 'sqlite3', //UPDATE TO MONGOOSE
   connection: {
-    host: '127.0.0.1',
-    user: 'your_database_user',
-    password: 'password',
-    database: 'shortlydb',
+    host: '127.0.0.1', //UPDATE THIS WHEN WE KNOW THE MONGO SERVER IP
+    user: 'your_database_user', //UPDATE TO MONGOOSE
+    password: 'password', //UPDATE TO MONGOOSE
+    database: 'shortlydb', //UPDATE TO MONGOOSE
     charset: 'utf8',
     filename: path.join(__dirname, '../db/shortly.sqlite')
   }
