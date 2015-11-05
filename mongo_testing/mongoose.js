@@ -46,6 +46,8 @@ db.once('open', function(callback){
 
   //var savePromise = Promise.promisify(Kitten.prototype.save);
 
+  // savePromise.call(frank).then()
+
   /*frank.save().then(function(){
     Kitten.find(function(err, kittens){
       if(err){
