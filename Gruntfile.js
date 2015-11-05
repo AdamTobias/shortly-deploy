@@ -2,21 +2,21 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
-      options: {
-        separator: ';',
-      },
-      dist: {
-        src: ['public/lib/handlebars.js', 
-              'public/lib/underscore.js', 
-              'public/lib/jquery.js', 
-              'public/lib/backbone.js',
-              'public/client/*.js'
-              ],
+    // concat: {
+    //   options: {
+    //     separator: ';',
+    //   },
+    //   dist: {
+    //     src: ['public/lib/handlebars.js', 
+    //           'public/lib/underscore.js', 
+    //           'public/lib/jquery.js', 
+    //           'public/lib/backbone.js',
+    //           'public/client/*.js'
+    //           ],
 
-        dest: 'dist/built.js',
-      },
-    },
+    //     dest: '_temp-dist/built.js',
+    //   },
+    // },
 
     mochaTest: {
       test: {
@@ -40,7 +40,12 @@ module.exports = function(grunt) {
       },
       my_target: {
         files: {
-          'dist/output.min.js': ['dist/built.js']
+          'public/_dist/output.min.js': ['public/lib/handlebars.js', 
+              'public/lib/underscore.js', 
+              'public/lib/jquery.js', 
+              'public/lib/backbone.js',
+              'public/client/*.js'
+              ]
         }
       }
     },
@@ -65,34 +70,36 @@ module.exports = function(grunt) {
     cssmin: {
       target: {
         files: {
-          'dist/output.css': ['public/client/style.css']
+          'public/_dist/output.css': ['public/style.css']
         }
       }
     },
 
-    watch: {
-      scripts: {
-        files: [
-          'public/client/**/*.js',
-          'public/lib/**/*.js',
-        ],
-        tasks: [
-          'concat',
-          'uglify'
-        ]
-      },
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
-      }
-    },
+    // watch: {
+    //   scripts: {
+    //     files: [
+    //       'public/client/**/*.js',
+    //       'public/lib/**/*.js',
+    //     ],
+    //     tasks: [
+    //       'concat',
+    //       'uglify'
+    //     ]
+    //   },
+    //   css: {
+    //     files: 'public/*.css',
+    //     tasks: ['cssmin']
+    //   }
+    // },
 
     shell: {
       prodServer: {
       }
     },
-  });
 
+    clean: ['public/_dist/*']
+  });
+  
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -101,6 +108,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -126,7 +134,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
   ]);
 
-  grunt.registerTask('bagel', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('bagel', ['jshint', 'uglify']);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {

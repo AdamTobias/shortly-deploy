@@ -14,6 +14,10 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'));
   app.use(express.cookieParser('shhhh, very secret'));
   app.use(express.session());
+  app.use(function(req, res, next){
+    console.log('Receiving ' + req.method + ' from ' + req.url);
+    next();
+  })
 });
 
 app.get('/', util.checkUser, handler.renderIndex);
@@ -29,6 +33,6 @@ app.get('/logout', handler.logoutUser);
 app.get('/signup', handler.signupUserForm);
 app.post('/signup', handler.signupUser);
 
-app.get('/*', handler.navToLink);
+// app.get('/*', handler.navToLink);
 
 module.exports = app;

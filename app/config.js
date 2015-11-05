@@ -1,7 +1,35 @@
 var Bookshelf = require('bookshelf');
 var path = require('path');
+var mongoose = require('mongoose');
 
-var db = Bookshelf.initialize({
+
+mongoose.connect('mongodb://localhost/test');
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', function(callback){console.log('Database opened');});
+
+module.exports.userSchema = mongoose.Schema({
+  username: String,
+  password: String
+});
+
+module.exports.urlSchema = mongoose.Schema({
+  url: String,
+  base_url: String,
+  code: String,
+  title: String,
+  visits: Number
+});
+
+
+// var Urls = mongoose.model('urls', urlSchema);
+
+
+
+/*var db = Bookshelf.initialize({
   client: 'sqlite3', //UPDATE TO MONGOOSE
   connection: {
     host: '127.0.0.1', //UPDATE THIS WHEN WE KNOW THE MONGO SERVER IP
@@ -42,4 +70,4 @@ db.knex.schema.hasTable('users').then(function(exists) {
   }
 });
 
-module.exports = db;
+module.exports = db;*/
